@@ -38,7 +38,13 @@ jobs:
         with:
           dotnet-version: 8.0.x
       - name: Publish .NET Core Project
+        continue-on-error: true
         run: dotnet publish WebGameTest.csproj -c Release -o release --nologo
+      - name: Print directories
+        run: |
+          ls -l /home/runner/.nuget/packages/nkast.xna.framework.content.pipeline.builder/3.14.9001
+          ls -l /home/runner/.nuget/packages/nkast.xna.framework.content.pipeline.builder/3.14.9001/build
+          ls -l /home/runner/.nuget/packages/nkast.xna.framework.content.pipeline.builder/3.14.9001/tools
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:

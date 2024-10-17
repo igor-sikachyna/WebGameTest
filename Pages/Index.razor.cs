@@ -24,7 +24,7 @@ namespace WebGameTest.Pages
             // init game
             if (_game == null)
             {
-                _game = new WebGameTestGame(localStorage);
+                _game = new WebGameTestGame(localStorage, JsRuntime);
                 _game.Run();
             }
 

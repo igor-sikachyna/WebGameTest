@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.JSInterop;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -21,12 +22,16 @@ namespace WebGameTest
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Blazored.LocalStorage.ISyncLocalStorageService localStorage;
+        IJSRuntime jsRuntime;
+        double lastTime = 0.0;
+        int counter = 0;
 
-        public WebGameTestGame(Blazored.LocalStorage.ISyncLocalStorageService blazoredLocalStorage)
+        public WebGameTestGame(Blazored.LocalStorage.ISyncLocalStorageService blazoredLocalStorage, IJSRuntime injectJsRuntime)
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             localStorage = blazoredLocalStorage;
+            jsRuntime = injectJsRuntime;
             Console.WriteLine(localStorage);
         }
 
@@ -94,6 +99,10 @@ namespace WebGameTest
             {
                 Console.WriteLine(File.ReadAllText("save.json"));
             }
+            if (keyboardState.IsKeyDown(Keys.Z))
+            {
+                jsRuntime.InvokeVoidAsync("printTest", "Hello world");
+            }
 
             if (keyboardState.IsKeyDown(Keys.Escape) ||
                 keyboardState.IsKeyDown(Keys.Back) ||
@@ -114,6 +123,13 @@ namespace WebGameTest
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            var currentTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            Console.WriteLine(1e3 / (currentTime - lastTime));
+            lastTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            //Console.Write(counter + " ");
+            counter++;
+            //Console.WriteLine(DateTimeOffset.Now.ToUnixTimeMilliseconds());
+
             GraphicsDevice.Clear(Color.BlueViolet);
 
             // TODO: Add your drawing code here
@@ -124,6 +140,13 @@ namespace WebGameTest
             spriteBatch.Begin();
             spriteBatch.Draw(axeTexture, new Vector2(graphics.PreferredBackBufferWidth / 2 - axeTexture.Width / 2, graphics.PreferredBackBufferHeight / 2 - axeTexture.Height / 2), Color.White);
             spriteBatch.End();
+
+            for (int i = 0; i < 1000; i++)
+            {
+                spriteBatch.Begin();
+                spriteBatch.Draw(axeTexture, new Vector2(i / 2, i % 500), Color.White);
+                spriteBatch.End();
+            }
 
             base.Draw(gameTime);
         }

@@ -22,6 +22,10 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
   </PropertyGroup>
 
+  <PropertyGroup>
+    <RunAOTCompilation>true</RunAOTCompilation>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="Pages\Index.razor.cs" />
     <Compile Include="Program.cs" />

@@ -27,7 +27,7 @@ jobs:
     environment:
       name: github-pages
       url: $
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -36,7 +36,7 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 8.0.x
       - name: Publish .NET Core Project
         run: dotnet publish WebGameTest.csproj -c Release -o release --nologo
       - name: Upload artifact
